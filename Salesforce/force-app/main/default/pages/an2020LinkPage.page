@@ -1,0 +1,276 @@
+<apex:page id="page" controller="an2020LinkPageCtr" docType="html-5.0" showHeader="false" sidebar="false" cache="false" lightningStylesheets="false" wizard="false">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta charset="UTF-8"/>
+    <apex:stylesheet value="{!URLFOR($Resource.an2020htmlDatta, '/an2020/style.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.an2020htmlDatta, '/an2020/meanmenu.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.an2020htmlDatta, '/an2020/jquery.meanmenu.js')}"/>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            viewPageFunc();
+        
+            $("#mainProf").fadeIn(1000);
+            $("#linkData").fadeIn(2000);
+            $("#underArea").fadeIn(3000);
+            
+            document.getElementById('lipsArea').addEventListener('mouseover', function() {
+                $("#lipsPreview").fadeIn(500);
+            });
+         
+            document.getElementById('lipsArea').addEventListener('mouseleave', function() {
+                $("#lipsPreview").fadeOut(500);
+            });
+            
+            document.getElementById('instaArea').addEventListener('mouseover', function() {
+                $("#instaPreview").fadeIn(500);
+            });
+         
+            document.getElementById('instaArea').addEventListener('mouseleave', function() {
+                $("#instaPreview").fadeOut(500);
+            });
+            
+            document.getElementById('twitterArea').addEventListener('mouseover', function() {
+                $("#twitterPreview").fadeIn(500);
+            });
+         
+            document.getElementById('twitterArea').addEventListener('mouseleave', function() {
+                $("#twitterPreview").fadeOut(500);
+            });
+            
+            document.getElementById('rroomArea').addEventListener('mouseover', function() {
+                $("#rroomPreview").fadeIn(500);
+            });
+         
+            document.getElementById('rroomArea').addEventListener('mouseleave', function() {
+                $("#rroomPreview").fadeOut(500);
+            });
+        });
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            // コンテナを指定
+            const section = document.querySelector('.cherry-blossom-container');
+          
+            // 花びらを生成する関数
+            const createPetal = () => {
+                const petalEl = document.createElement('span');
+                petalEl.className = 'petal';
+                const minSize = 10;
+                const maxSize = 15;
+                const size = Math.random() * (maxSize + 1 - minSize) + minSize;
+                petalEl.style.width = `${size}px`;
+                petalEl.style.height = `${size}px`;
+                petalEl.style.left = Math.random() * innerWidth + 'px';
+                section.appendChild(petalEl);
+            
+                // 一定時間が経てば花びらを消す
+                setTimeout(() => {
+                    petalEl.remove();
+                }, 10000);
+            }
+          
+            // 花びらを生成する間隔をミリ秒で指定
+            setInterval(createPetal, 300);
+        });
+    </script>
+    <style>
+        .snsLink{
+            text-align:right;
+            vertical-align:middle;
+            height:35px;
+        }
+        .snsText{
+            text-align:left;
+            vertical-align:middle;
+        }
+        .snsURL{
+            text-align:left;
+            vertical-align:middle;
+        }
+        /* 桜を表示するコンテナのスタイル */
+        .cherry-blossom-container {
+        }
+        
+        /* 桜の花びらのスタイル */
+        .petal {
+            position: absolute;
+            background-color: #ffc0cb; /* 花びらの色 */
+            border-radius: 150% 0 150% 0;
+            animation: animate-petal 10s linear;
+        }
+        
+        .petal::after {
+            content: "";
+            position: absolute;
+            top: -14%;
+            left: -10%;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: #ffc0cb;
+            border-radius: 150% 0 150% 0;
+            transform: rotate(15deg);
+        }
+        
+        /* 花びらが降るアニメーション */
+        @keyframes animate-petal {
+            0% {
+                top: 0;
+                opacity: 0;
+                transform: rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                top: 100vh;
+                transform: rotate(3000deg);
+            }
+        }
+    </style>
+    <title>an2020</title>
+  </head>
+  <body>
+    <apex:form id="form">
+    <apex:actionFunction name="viewPageFunc" action="{!viewPage}" reRender="none"/>
+    <apex:actionFunction name="linkLipsFunc" action="{!linkLips}" reRender="none"/>
+    <apex:actionFunction name="linkInstaFunc" action="{!linkInsta}" reRender="none"/>
+    <apex:actionFunction name="linkTwitterFunc" action="{!linkTwitter}" reRender="none"/>
+    <apex:actionFunction name="linkRRoomFunc" action="{!linkRRoom}" reRender="none"/>
+    <div class="base cherry-blossom-container" id="top">
+      <hr class="hr3">
+        <div class="box">
+          <div class="work">
+            <div class="subblock" id="mainProf" style="display:none;">
+              <table width="100%">
+                <tr>
+                  <td width="30%" style="text-align:center;vertical-align:middle;">
+                    <div>
+                      <apex:image id="theImage" value="{!URLFOR($Resource.an2020icons, '/an2020icons/an2020Image.png')}" width="100" height="100"/>
+                    </div>
+                    <div>
+                      <table width="100%">
+                        <tr>
+                          <td style="text-align:right;vertical-align:middle;">
+                            <span style="font-family:Hannotate SC;font-size:20px;font-weight:bold">あん</span>
+                          </td>
+                          <td style="text-align:left;vertical-align:middle;">
+                            <apex:image value="{!URLFOR($Resource.an2020icons, '/an2020icons/kuroneko.png')}" width="50" height="50" />
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                  <td width="70%" style="text-align:center;vertical-align:middle;">
+                    <div style="font-family:Hannotate SC;font-weight:bold">いいね、コメント🌸</div>
+                    <div style="font-family:Hannotate SC;font-weight:bold">フォロー＆保存🌸</div>
+                    <div style="font-family:Hannotate SC;font-weight:bold">嬉しいです！</div>
+                    <div style="font-family:Hannotate SC;font-weight:bold">フォローいただけたら返します！</div>
+                    <div style="font-family:Hannotate SC;font-weight:bold">どうぞよろしくお願いします✨</div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br/>
+            <div class="subblock" id="linkData" style="display:none;">
+              <table width="100%">
+                <tr id="lipsArea">
+                  <td width="15%" class="snsLink">
+                    <apex:image value="{!URLFOR($Resource.an2020snsIcons, '/snsIcons/lips-icon.png')}" width="30" height="30" style="padding-right:10px;"/>
+                  </td>
+                  <td width="15%" class="snsText">
+                    <span style="font-family:Hannotate SC;font-weight:bold;">LIPS</span>
+                  </td>
+                  <td width="70%" class="snsURL">
+                    <apex:outputLink value="{!$Setup.anSiteSetting__c.Lips__c}" target="_blank" style="font-weight:bold;" onClick="linkLipsFunc();">LIPSのプロフ</apex:outputLink>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <div id="lipsPreview" style="display:none;">
+                      
+                    </div>
+                  </td>
+                </tr>
+                <tr id="instaArea">
+                  <td class="snsLink">
+                    <apex:image value="{!URLFOR($Resource.an2020snsIcons, '/snsIcons/insta.jpg')}" width="30" height="30" style="padding-right:10px;"/>
+                  </td>
+                  <td class="snsText">
+                    <span style="font-family:Hannotate SC;font-weight:bold;">Instagram</span>
+                  </td>
+                  <td class="snsURL">
+                    <apex:outputLink value="{!$Setup.anSiteSetting__c.Insta__c}" target="_blank" style="font-weight:bold;" onClick="linkInstaFunc();">Instagramのプロフ</apex:outputLink>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <div id="instaPreview" style="display:none;">
+                      
+                    </div>
+                  </td>
+                </tr>
+                <tr id="twitterArea">
+                  <td class="snsLink">
+                    <apex:image value="{!URLFOR($Resource.an2020snsIcons, '/snsIcons/twitter.png')}" width="30" height="30" style="padding-right:10px;"/>
+                  </td>
+                  <td class="snsText">
+                    <span style="font-family:Hannotate SC;font-weight:bold;">twitter</span>
+                  </td>
+                  <td class="snsURL">
+                    <apex:outputLink value="{!$Setup.anSiteSetting__c.Twitter__c}" target="_blank" style="font-weight:bold;" onClick="linkTwitterFunc();">Twitterのプロフ</apex:outputLink>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <div id="twitterPreview" style="display:none;">
+                      
+                    </div>
+                  </td>
+                </tr>
+                <tr id="rroomArea">
+                  <td class="snsLink">
+                    <apex:image value="{!URLFOR($Resource.an2020snsIcons, '/snsIcons/RRoom.png')}" width="30" height="30" style="padding-right:10px;"/>
+                  </td>
+                  <td class="snsText">
+                    <span style="font-family:Hannotate SC;font-weight:bold;">楽天ROOM</span>
+                  </td>
+                  <td class="snsURL">
+                    <apex:outputLink value="{!$Setup.anSiteSetting__c.RRoom__c}" target="_blank" style="font-weight:bold;" onClick="linkRRoomFunc();">楽天ROOMのプロフ</apex:outputLink>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <div id="rroomPreview" style="display:none;">
+                      
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br/>
+            <div id="underArea" style="display:none;">
+              <table width="100%">
+                <tr>
+                  <td width="100%" style="text-align:center;vertical-align:top;">
+                    <apex:image id="shokai" value="{!URLFOR($Resource.an2020htmlDatta, '/an2020/shokai.png')}" width="100%"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="100%" style="text-align:center;vertical-align:top;">
+                    <apex:image id="cosume" value="{!URLFOR($Resource.an2020htmlDatta, '/an2020/cosume.jpeg')}" width="100%"/>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </hr>
+    </div>
+    </apex:form>
+  </body>
+</apex:page>

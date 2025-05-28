@@ -1,0 +1,439 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 01-03-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<apex:page id="page" standardController="MonthlyAttendance__c" extensions="ExtMonthlyWorkCtr" showHeader="false" sidebar="false">
+  <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" />
+  <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" />
+  <style>
+    .titleStyle {
+        border-radius: 4px 4px 4px 4px;
+        padding:5px 5px 5px 5px;
+        position: relative;
+        padding: 0.3em 0.5em;
+        background: -webkit-linear-gradient(to top, rgb(137, 184, 255), #c5ceff);
+        background: linear-gradient(to top, rgb(137, 184, 255), #c5ceff);
+        color: #495193;
+        width:100%;
+        font-size:16px;
+        font-weight:bold;
+    }
+    .subTitleStyle {
+        border-radius: 4px 4px 4px 4px;
+        font-size:12px;
+        padding: 0.25em 0.5em;
+        color: #494949;
+        background: #e6e6fa;
+        border-left: solid 5px #7db4e6;
+    }
+    .titleStyleModal {
+        border-radius: 4px 4px 4px 4px;
+        padding:5px 5px 5px 5px;
+        position: relative;
+        padding: 0.3em 0.5em;
+        background: -webkit-linear-gradient(to top, rgb(137, 184, 255), #c5ceff);
+        background: linear-gradient(to top, rgb(137, 184, 255), #c5ceff);
+        color: #495193;
+        width:95%;
+        font-size:16px;
+        font-weight:bold;
+    }
+    .textModal {
+        border-radius: 4px 4px 4px 4px;
+        padding: 5px 5px 5px 5px;
+        font-size:12px;
+    }
+    .boxTitle {
+        border-radius: 4px 4px 4px 4px;
+        font-size: 12px;
+        background: #bbdbf3;
+        padding: 4px;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+        height:20px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+    .boxData {
+        border-radius: 4px 4px 4px 4px;
+        font-size: 12px;
+        padding: 4px;
+        margin: 2em 0;
+        letter-spacing: 0.05em;
+        background: #ebf6f7;
+        height:20px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+    .tableTdTitle {
+        border-radius: 4px 4px 4px 4px;
+        font-size: 12px;
+        background: #bbdbf3;
+        padding: 8px;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+        height:20px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+    .tableTdSpace{
+        border-radius: 4px 4px 4px 4px;
+        font-size: 12px;
+        margin: 2em 0;
+        letter-spacing: 0.05em;
+        background: #ebf6f7;
+        height:20px;
+        padding:3px 0px 5px 5px;
+    }
+    .tableTdSpaceInactive{
+        border-radius: 4px 4px 4px 4px;
+        font-size: 12px;
+        margin: 2em 0;
+        letter-spacing: 0.05em;
+        background: #d4dcda;
+        height:20px;
+        padding:3px 0px 5px 5px;
+    }
+    .tableTdSpaceToday{
+        border-radius: 4px 4px 4px 4px;
+        font-size: 12px;
+        margin: 2em 0;
+        letter-spacing: 0.05em;
+        background: #f5deb3;
+        height:20px;
+        padding:3px 0px 5px 5px;
+    }
+    .buttonStyle{
+        font-size:12px;
+        padding:0px 0px 5px 5px;
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        color: #191970;
+        border: solid 1px #191970;
+        background: #f2fcff;
+        border-radius: 3px;
+        transition: .4s;
+    }
+    .buttonStyle:hover{
+        background: #191970;
+        color: #FFF;
+    }
+    
+    .buttonStyleTableInnner{
+        font-size:12px;
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        color: #191970;
+        border: solid 1px #191970;
+        background: #f2fcff;
+        border-radius: 3px;
+        transition: .4s;
+    }
+    .buttonStyleTableInnner:hover{
+        background: #191970;
+        color: #FFF;
+    }
+    
+    .buttonStyleApploval{
+        font-size:12px;
+        padding:0px 0px 5px 5px;
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        color: #32cd32;
+        border: solid 1px #32cd32;
+        background: #f2fcff;
+        border-radius: 3px;
+        transition: .4s;
+    }
+    .buttonStyleApploval:hover{
+        background: #32cd32;
+        color: #FFF;
+    }
+    .content{
+        margin: 0 auto;
+    }
+    <apex:repeat id="repDayWorkSt" value="{!dwList}" var="dwSt">
+      .modal{!dwSt.Id}{
+          display: none;
+          height: 100vh;
+          position: absolute;
+          top: 0;
+          width: 100%;
+      }
+      .modal{!dwSt.Id}__bg{
+          background: rgba(0,0,0,0.8);
+          height: 100vh;
+          position: fixed;
+          width: 100%;
+      }
+      .modal{!dwSt.Id}__content{
+          background: #fff;
+          left: 50%;
+          padding: 40px;
+          position: fixed;
+          top: 50%;
+          transform: translate(-50%,-50%);
+          width: 60%;
+      }
+    </apex:repeat>
+  </style>
+  <script>
+    function checkSave(){
+        if (window.confirm('勤怠を保存します。よろしいですか？')) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function openMWindow(elmId){
+        $('.js-modal' + elmId).fadeIn();
+        return false;
+    }
+    function closeMWindow(elmId){
+        $('.js-modal' + elmId).fadeOut();
+        return false;
+    }
+    function print(){
+        window.open('/apex/PDF_Kinmuhyo?Id={!recId}');
+    }
+  </script>
+  <apex:form id="form">
+    <body>
+      <apex:pageMessages />
+      <apex:repeat id="repDayWorkMod" value="{!dwList}" var="dwMod">
+        <div class="modal js-modal{!dwMod.Id}" style="display:none;">
+          <div class="modal{!dwMod.Id}__bg js-modal-close{!dwMod.Id}"></div>
+          <div class="modal{!dwMod.Id}__content">
+            <p>
+              <div class="titleStyleModal">勤務日時の編集（<apex:outputField value="{!dwMod.Date__c}" />）</div><br/><br/>
+              <div class="textModal">
+                <span>休憩時間1：</span><apex:inputField value="{!dwMod.BreakTimeStart1__c}"/><span>　～　</span><apex:inputField value="{!dwMod.BreakTimeEnd1__c}"/><br/>
+              </div>
+              <div class="textModal">
+                <span>休憩時間2：</span><apex:inputField value="{!dwMod.BreakTimeStart2__c}"/><span>　～　</span><apex:inputField value="{!dwMod.BreakTimeEnd2__c}"/><br/>
+              </div>
+              <div class="textModal">
+                <span>休憩時間3：</span><apex:inputField value="{!dwMod.BreakTimeStart3__c}"/><span>　～　</span><apex:inputField value="{!dwMod.BreakTimeEnd3__c}"/><br/>
+              </div>
+              <div class="textModal">
+                <span>休憩時間4：</span><apex:inputField value="{!dwMod.BreakTimeStart4__c}"/><span>　～　</span><apex:inputField value="{!dwMod.BreakTimeEnd4__c}"/><br/>
+              </div>
+            </p>
+            <span style="padding: 5px 5px 5px 5px;">
+              <a class="js-modal-close{!dwMod.Id} buttonStyle" onClick="closeMWindow('{!dwMod.Id}');" style="cursor:pointer;">閉じる</a>
+            </span>
+            <span style="padding: 5px 5px 5px 5px;">
+              <apex:commandLink value="保存" styleClass="buttonStyle" action="{!saveBreakTime}" rendered="{!monthlyApprovedFlag == false}">
+                <apex:param name="dataId" value="{!dwMod.Id}" assignTo="{!dataId}" />
+              </apex:commandLink>
+            </span>
+          </div>
+        </div>
+      </apex:repeat>
+      <table width="95%" style="padding-top:10px;">
+        <tr>
+          <td width="100%">
+            <div class="titleStyle">
+              <span>勤怠一覧（</span>
+              <apex:outputtext value="{0, date, yyyy年MM月}">
+                <apex:param value="{!scDate}"></apex:param>
+              </apex:outputtext>
+              <span>）</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%">
+              <tr>
+                <td colspan="10"><div class="subTitleStyle">基本情報</div></td>
+              </tr>
+            </table>
+            <table>
+              <tr>
+                <td class="boxTitle"><span>勤務者名</span></td>
+                <td class="boxTitle"><span>出勤日数</span></td>
+                <td class="boxTitle"><span>労働時間</span></td>
+                <td class="boxTitle"><span>休憩時間</span></td>
+                <td class="boxTitle"><span>有給日数</span></td>
+                <td class="boxTitle"><span>特休日数</span></td>
+                <td class="boxTitle"><span>遅刻回数</span></td>
+                <td class="boxTitle"><span>早退回数</span></td>
+              </tr>
+              <tr>
+                <td class="boxData"><span><apex:outputField value="{!maData.EmpInfo__r.Name}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.JoinWorkDayCount__c}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.SumWorkTime__c}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.SumBreakTime__c}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.PaidDayCount__c}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.SpecialPaidLeave__c}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.LateCount__c}" /></span></td>
+                <td class="boxData"><span><apex:outputField value="{!maData.LeaveEarlyCount__c}" /></span></td>
+              </tr>
+            </table>
+            <table>
+              <tr>
+                <td class="boxTitle"><span>状態</span></td>
+                <td class="boxTitle"><span>承認者</span></td>
+                <td class="boxTitle"><span>基準労働時間</span></td>
+                <td class="boxTitle"><span>基準休憩時間</span></td>
+                <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.MonthlyCheck__c}">
+                  <td class="boxTitle"><span>月次承認</span></td>
+                </apex:outputText>
+              </tr>
+              <tr>
+                <td class="boxData">
+                  <span>
+                    <apex:outputText style="color:red;" value="勤務中" rendered="{!empInfo.isWorking__c == true}" />
+                    <apex:outputText style="color:red;" value="出勤前" rendered="{!empInfo.isWorking__c == false}" />
+                  </span>
+                </td>
+                <td class="boxData"><span><apex:outputField value="{!maData.EmpInfo__r.Authorizer__r.Name}" /></span></td>
+                <td class="boxData">
+                  <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.StartWorkTime__c != null}">
+                    <span>
+                      <apex:outputField value="{!maData.EmpInfo__r.EmployeeType__r.StartWorkTime__c}" />
+                      <span>　～　</span>
+                      <apex:outputField value="{!maData.EmpInfo__r.EmployeeType__r.EndWorkTime__c}" />
+                    </span>
+                  </apex:outputText>
+                  <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.StartWorkTime__c == null}">
+                    <span>未指定</span>
+                  </apex:outputText>
+                </td>
+                <td class="boxData">
+                  <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.StartBreakTime__c != null}">
+                    <span>
+                      <apex:outputField value="{!maData.EmpInfo__r.EmployeeType__r.StartBreakTime__c}" />
+                      <span>　～　</span>
+                      <apex:outputField value="{!maData.EmpInfo__r.EmployeeType__r.EndBreakTime__c}" />
+                    </span>
+                  </apex:outputText>
+                  <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.StartBreakTime__c == null}">
+                    <span>未指定</span>
+                  </apex:outputText>
+                </td>
+                <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.MonthlyCheck__c}">
+                  <td class="boxData">
+                    <apex:outputText value="申請前" rendered="{!monthlyApplovalFlag == false && monthlyApprovedFlag == false}"/>
+                    <apex:outputText value="申請中" rendered="{!monthlyApplovalFlag == true && monthlyApprovedFlag == false}"/>
+                    <apex:outputText value="承認済" rendered="{!monthlyApplovalFlag == false && monthlyApprovedFlag == true}"/>
+                  </td>
+                </apex:outputText>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%">
+              <tr>
+                <td colspan="10"><div class="subTitleStyle">勤務情報</div></td>
+              </tr>
+              <tr>
+                <td colspan="10">
+                　<table width="100%">
+                    <tr>
+                      <td style="widht:40%;">
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="出勤" styleClass="buttonStyle" action="{!startWork}" rendered="{!empInfo.isWorking__c == false && monthlyApprovedFlag == false}"/></span>
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="退勤" styleClass="buttonStyle" action="{!endWork}" rendered="{!empInfo.isWorking__c == true && monthlyApprovedFlag == false}"/></span>
+                      </td>
+                      <td style="widht:60%;text-align:right;" >
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="前月" styleClass="buttonStyle" action="{!beforeMonth}"/></span>
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="次月" styleClass="buttonStyle" action="{!nextMonth}"/></span>
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="保存" styleClass="buttonStyle" action="{!saveAll}" onClick="return checkSave();" rendered="{!monthlyApprovedFlag == false}"/></span>
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="月次申請" styleClass="buttonStyle" action="{!monthlyApplovalRequest}" rendered="{!monthlyApplovalFlag == false && monthlyApprovedFlag == false && maData.EmpInfo__r.EmployeeType__r.MonthlyCheck__c}"/></span>
+                        <span style="padding: 5px 5px 5px 5px;"><apex:commandLink value="勤務表" styleClass="buttonStyle" onClick="print();"/></span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td>　</td></tr>
+              <tr>
+                <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.DailyCheck__c}">
+                  <th class="tableTdTitle"><div>日次申請</div></th>
+                </apex:outputText>
+                <th class="tableTdTitle"><div>日付</div></th>
+                <th class="tableTdTitle"><div>出社時間</div></th>
+                <th class="tableTdTitle"><div>退社時間</div></th>
+                <th class="tableTdTitle" colspan="2"><div>休憩時間</div></th>
+                <th class="tableTdTitle"><div>労働時間</div></th>
+                <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.VacationCheck__c}">
+                  <th class="tableTdTitle" colspan="2"><div>休暇設定</div></th>
+                </apex:outputText>
+                <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.VacationCheck__c == false}">
+                  <th class="tableTdTitle"><div>休暇設定</div></th>
+                </apex:outputText>
+                <th class="tableTdTitle"><div>メモ</div></th>
+              </tr>
+              <apex:repeat id="repDayWork" value="{!dwList}" var="dw">
+                <tr>
+                  <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.DailyCheck__c}">
+                    <td align="center" class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}">
+                      <apex:commandLink value="申請" styleClass="buttonStyleApploval" action="{!dayApploval}" rendered="{!monthlyApprovedFlag == false && maData.EmpInfo__r.EmployeeType__r.DailyCheck__c && dw.DailyApplovalRequested__c == false && dw.DailyApplovalCheck__c == false && dw.VacationRequest__c == false}">
+                        <apex:param name="dataId" value="{!dw.Id}" assignTo="{!dataId}" />
+                      </apex:commandLink>
+                      <apex:commandLink value="承認" styleClass="buttonStyleApploval" action="{!dayApplovalOk}" rendered="{!monthlyApprovedFlag == false && maData.EmpInfo__r.EmployeeType__r.DailyCheck__c && dw.DailyApplovalRequested__c == true && dw.DailyApplovalCheck__c == false && dw.VacationRequest__c == false}">
+                        <apex:param name="dataId" value="{!dw.Id}" assignTo="{!dataId}" />
+                      </apex:commandLink>
+                      <apex:outputText value="　" rendered="{!monthlyApprovedFlag == false && maData.EmpInfo__r.EmployeeType__r.DailyCheck__c && dw.DailyApplovalRequested__c == true && dw.DailyApplovalCheck__c == false}" />
+                      <apex:commandLink value="否認" styleClass="buttonStyleApploval" action="{!dayApplovalNg}" rendered="{!monthlyApprovedFlag == false && maData.EmpInfo__r.EmployeeType__r.DailyCheck__c && dw.DailyApplovalRequested__c == true && dw.DailyApplovalCheck__c == false && dw.VacationRequest__c == false}">
+                        <apex:param name="dataId" value="{!dw.Id}" assignTo="{!dataId}" />
+                      </apex:commandLink>
+                      <apex:outputText value="承認済" style="color:blue;" rendered="{!dw.DailyApplovalRequested__c == false && dw.DailyApplovalCheck__c == true}"/>
+                    </td>
+                  </apex:outputText>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}"><apex:outputField value="{!dw.Date__c}" /><apex:outputText value="{!'(' + dw.DayOfWeek__c + ')'}"/></td>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}"><apex:inputField value="{!dw.ArriveAtWork__c}" /></td>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}"><apex:inputField value="{!dw.LeavingOffice__c}" /></td>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}" style="width:70px;"><apex:outputField value="{!dw.BreakTime__c}" /></td>
+                  <td align="center" class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}">
+                    <div class="content">
+                      <a class="js-modal-open{!dw.Id} buttonStyleTableInnner" onClick="openMWindow('{!dw.Id}');" style="cursor:pointer;">編集</a>
+                    </div>
+                  </td>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}" style="width:70px;"><apex:outputField value="{!dw.FixWorkTime__c}" /></td>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}">
+                    <apex:selectList value="{!dw.VacationSetting__c}" size="1">
+                      <apex:selectOptions value="{!vacList}"/>
+                    </apex:selectList>
+                  </td>
+                  <apex:outputText rendered="{!maData.EmpInfo__r.EmployeeType__r.VacationCheck__c}">
+                    <td align="center" class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}">
+                      <apex:outputText rendered="{!dw.VacationSetting__r.Applicability__c}">
+                        <apex:commandLink value="申請" styleClass="buttonStyleApploval" action="{!vacationApplovalRequest}" rendered="{!monthlyApprovedFlag == false && dw.VacationRequest__c == false && dw.VacationApploval__c == false}">
+                          <apex:param name="dataId" value="{!dw.Id}" assignTo="{!dataId}" />
+                        </apex:commandLink>
+                        <apex:commandLink value="承認" styleClass="buttonStyleApploval" action="{!vacationApplovalRequestOK}" rendered="{!monthlyApprovedFlag == false && dw.VacationRequest__c == true && dw.VacationApploval__c == false}">
+                          <apex:param name="dataId" value="{!dw.Id}" assignTo="{!dataId}" />
+                        </apex:commandLink>
+                        <apex:outputText value="　" rendered="{!monthlyApprovedFlag == false && dw.VacationRequest__c == true && dw.VacationApploval__c == false}"/>
+                        <apex:commandLink value="否認" styleClass="buttonStyleApploval" action="{!vacationApplovalRequestNG}" rendered="{!monthlyApprovedFlag == false && dw.VacationRequest__c == true && dw.VacationApploval__c == false}">
+                          <apex:param name="dataId" value="{!dw.Id}" assignTo="{!dataId}" />
+                        </apex:commandLink>
+                      </apex:outputText>
+                      <apex:outputText value="承認済" style="color:blue;" rendered="{!dw.VacationRequest__c == false && dw.VacationApploval__c == true}"/>
+                    </td>
+                  </apex:outputText>
+                  <td class="{!IF(dw.Date__c == TODAY(),'tableTdSpaceToday',IF(OR(dw.PublicHoliday__c == true,dw.WorkDay__c == false,FIND(TEXT(dw.Date__c),hdStr) != 0),'tableTdSpaceInactive','tableTdSpace'))}"><apex:inputField style="width:95%;" value="{!dw.Remarks__c}" /></td>
+                </tr>
+              </apex:repeat>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <br/>
+      <br/>
+      <br/>
+    </bodY>
+  </apex:form>
+</apex:page>

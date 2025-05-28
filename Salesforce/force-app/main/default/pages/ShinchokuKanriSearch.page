@@ -1,0 +1,77 @@
+<apex:page controller="ShinchokuKanriSearchCtr" lightningStylesheets="true" docType="html-5.0">
+  <style>
+    .restable {
+        border-collapse:  collapse; /* セルの線を重ねる */
+    }
+     
+    .restable tr:nth-child(odd) {
+        background-color:  #e7e7eb; /* 背景色指定 */
+    }
+     
+    .restable th,td {
+        padding: 5px 10px;          /* 余白指定 */
+    }
+  </style>
+  <apex:form >
+    <div style="background:white;">
+    <apex:actionFunction name="search" action="{!search}" />
+    <div style="padding:20px 5px 20px 5px;">
+      <table>
+        <tr>
+          <td>
+            <apex:commandButton value="今日" action="{!searchToday}" style="line-height:40px;height:40px;width:350px;font-size:20px;"/>
+          </td>
+          <td>
+            <apex:commandButton value="当月" action="{!searchMonth}" style="margin-left:10px;line-height:40px;height:40px;width:350px;font-size:20px;"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div style="padding:5px 5px 20px 5px;">
+      <div style="background-color:  #ddd;height:25px; line-height:25px; font-weight:bold;">　[絞り込み条件]</div>
+      <table width="100%">
+        <tr>
+          <td><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Name.Label}" /></td>
+          <td><apex:inputText value="{!searchName}" onChange="search();"/></td>
+          <td><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Status__c.Label}" /></td>
+          <td><apex:inputText value="{!statusName}" onChange="search();"/></td>
+          <td><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Category__c.Label}" /></td>
+          <td><apex:inputText value="{!categoryName}" onChange="search();"/></td>
+        </tr>
+        <tr>
+          <td><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.RequestDate__c.Label}" /></td>
+          <td><apex:input type="date" value="{!startDate}" onChange="search();"/>　～　<apex:input type="date" value="{!endDate}" onChange="search();"/></td>
+        </tr>
+      </table>
+    </div>
+    <div style="padding:5px 5px 5px 5px;">
+      <table width="100%" class="restable">
+        <tr style="background-color:  #ddd;font-weight:bold;">
+          <th>詳細</th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Name.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Status__c.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Category__c.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.RequestDate__c.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.DueDate__c.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.Naiyo__c.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.StartDate__c.Label}" /></th>
+          <th><apex:outputText value="{!$ObjectType.ShinchokuKanri__c.Fields.EndDate__c.Label}" /></th>
+        </tr>
+        <apex:repeat value="{!objData}" var="obj">
+          <tr style="height:40px;">
+            <td><apex:outputLink value="/{!obj.Id}" >詳細</apex:outputLink></td>
+            <td><apex:outputField value="{!obj.Name}"/></td>
+            <td><apex:outputField value="{!obj.Status__c}"/></td>
+            <td><apex:outputField value="{!obj.Category__c}"/></td>
+            <td><apex:outputField value="{!obj.RequestDate__c}"/></td>
+            <td><apex:outputField value="{!obj.DueDate__c}"/></td>
+            <td><apex:outputField value="{!obj.Naiyo__c}"/></td>
+            <td><apex:outputField value="{!obj.StartDate__c}"/></td>
+            <td><apex:outputField value="{!obj.EndDate__c}"/></td>
+          </tr>
+        </apex:repeat>
+      </table>
+    </div>
+    </div>
+  </apex:form>
+</apex:page>

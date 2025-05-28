@@ -1,0 +1,12 @@
+<apex:page standardController="Salary__c" extensions="SalaryCtr" lightningStylesheets="true" showHeader="false" sidebar="false">
+<apex:form >
+  <apex:pageMessages />
+  <table width="100%">
+    <tr>
+      <td>
+        <apex:commandButton action="{!sendMail}" style="width:200px;height:30px;" value="給与明細送信"/>
+      </td>
+    </tr>
+  </table>
+</apex:form>
+</apex:page>

@@ -1,0 +1,92 @@
+<apex:page standardController="TaioAnken__c" extensions="TaioAnkenManHoursExt" showHeader="false" sidebar="false" lightningStylesheets="true" docType="HTML-5.0" id="page">
+<script>
+  function setId(thisId){
+      document.getElementById("page:form:actionId").value=thisId;
+  }
+  function setDeleteNumber(currentNumber){
+      document.getElementById("page:form:currentNumber").value=currentNumber;
+  }
+</script>
+<apex:form id="form">
+　<apex:pageMessages />
+  <table>
+    <tr>
+      <td rowspan="2">
+        <apex:commandButton value="追加" action="{!addData}" style="width:120px;height:30px;margin-right:50px;margin-top: 20px;" />
+      </td>
+      <td rowspan="2">
+        <apex:commandButton value="保存" action="{!saveData}" style="width:120px;height:30px;margin-right:50px;margin-top: 20px;" />
+      </td>
+      <td rowspan="2">
+        <apex:commandButton value="前月" action="{!beforeMonth}" style="width:120px;height:30px;margin-right:50px;margin-top: 20px;" />
+      </td>
+      <td rowspan="2">
+        <apex:commandButton value="次月" action="{!nextMonth}" style="width:120px;height:30px;margin-right:100px;margin-top: 20px;" />
+      </td>
+      <th style="width:10%;">開始時間</th>
+      <th style="width:10%;">終了時間</th>
+      <th style="width:10%;">休憩時間</th>
+      <td rowspan="2">
+        <apex:commandButton value="一括保存" action="{!BulksaveData}" style="width:120px;height:30px;margin-right:50px;margin-top: 20px;" />
+      </td>
+      <td rowspan="2">
+        <apex:commandButton value="一括行追加" action="{!addBulkData}" style="width:120px;height:30px;margin-right:50px;margin-top: 20px;" />
+      </td>
+      <th style="width:10%;">総労働時間</th>
+      <th style="width:10%;">実働合計時間</th>
+      <th style="width:10%;">総休憩時間</th>
+    </tr>
+    <tr>
+      <td style="height:60px;">
+        <apex:selectList value="{!StartTime}" size="1">
+          <apex:selectOptions value="{!dataList}" />
+        </apex:selectList>
+      </td>
+      <td style="height:60px;">
+        <apex:selectList value="{!EndTime}" size="1">
+          <apex:selectOptions value="{!dataList}" />
+        </apex:selectList>
+      </td>
+      <td style="height:60px;">
+        <apex:selectList value="{!BreakTime}" size="1">
+          <apex:selectOptions value="{!dataList}" />
+        </apex:selectList>
+      </td>
+      <td style="height:60px;">
+          <apex:outputText value="{!TotalActualWorkHours}"></apex:outputText>
+      </td>
+      <td style="height:60px;">
+          <apex:outputText value="{!TotalWorkHours}"></apex:outputText>
+      </td>
+      <td style="height:60px;">
+          <apex:outputText value="{!TotalBreakTime}"></apex:outputText>
+      </td>
+    </tr>
+  </table>
+  <div>工数入力（{!monthView}）</div>
+  <table width="100%">
+    <tr style="border-bottom:solid 1px gray;">
+      <th style="width:50px;">行</th>
+      <th>アクション</th>
+      <th>日付</th>
+      <th>開始時間</th>
+      <th>終了時間</th>
+      <th>休憩時間</th>
+      <th>詳細</th>
+    </tr>
+    <apex:repeat value="{!mhList}" var="mhd">
+      <tr style="border-bottom:solid 1px gray;">
+        <td style="width:50px;"><apex:outputText value="{!mhd.currentNumber}"></apex:outputText></td>
+        <td><apex:commandButton value="削除" onClick="setId('{!mhd.mh.Id}'); setDeleteNumber('{!mhd.currentNumber}');" action="{!deleteItem}"/></td>
+        <td><apex:input type="date" value="{!mhd.dateData}" /></td>
+        <td><apex:inputField value="{!mhd.mh.StartTime__c}" /></td>
+        <td><apex:inputField value="{!mhd.mh.EndTime__c}" /></td>
+        <td><apex:inputField value="{!mhd.mh.BreakTime__c}" /></td>
+        <td><apex:inputField value="{!mhd.mh.Remarks__c}" style="width:500px;height:60px;"/></td>
+      </tr>
+    </apex:repeat>
+  </table>
+  <apex:inputHidden value="{!actionId}" id="actionId"/>
+  <apex:inputHidden value="{!setDeleteNumber}" id="currentNumber"/>
+</apex:form>
+</apex:page>

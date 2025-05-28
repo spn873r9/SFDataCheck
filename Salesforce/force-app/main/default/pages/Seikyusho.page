@@ -1,0 +1,218 @@
+<apex:page standardController="Invoice__c" extensions="SeikyushoCtr" renderAs="pdf" showHeader="false" applyhtmltag="false">
+<apex:stylesheet value="{!URLFOR($Resource.pdfcss,'pdfcss.css')}"/>
+  <table width="100%">
+    <tr>
+      <td align="center">
+        <div class="text" style="font-size:120%;">御 請 求 書</div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td align="right">
+        <span class="text">請求日</span>
+        <span class="text" style="border-bottom:1px #000000 solid;">
+          <apex:outputtext value="{0, date,yyyy年MM月dd日}">
+            <apex:param value="{!Invoice__c.Seikyubi__c}"></apex:param>
+          </apex:outputtext>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <span class="text">請求No.</span>
+        <span class="text" style="border-bottom:1px #000000 solid;">{!Invoice__c.Name}</span>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <span class="text">事業者番号</span>
+        <span class="text" style="border-bottom:1px #000000 solid;">T5030001141620</span>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <span style="border-bottom:1px #000000 solid; padding-left:10px;padding-right:10px;font-size:130%;">{!Invoice__c.Shiharaisaki__c} 御中</span>
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td align="left" style="width:60%;padding-top:10px;">
+        <span style="border-bottom:1px #000000 solid; padding-left:10px;padding-right:10px;">
+        <apex:outputtext value="{0, number,合計 ###,###,###,###,### 円（税込）}">
+          <apex:param value="{!Invoice__c.Goukei__c}"></apex:param>
+        </apex:outputtext>
+        </span>
+      </td>
+      <td align="left">
+        <apex:outputText rendered="{!Invoice__c.SeikyumotoKaishaName__c != null}">
+          <div>{!Invoice__c.SeikyumotoKaishaName__c}</div>
+        </apex:outputText>
+        <div>{!Invoice__c.SeikyouMoto__c}</div>
+      </td>
+      <td align="center" rowspan="2">
+        <!--<apex:image url="{!$Resource.hanko}" width="40" height="37"/>-->
+      </td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left">
+        <div style="font-size:80%;">〒{!Invoice__c.SeikyumotoPostCode__c}</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left" colspan="2">
+        <div style="font-size:80%;">{!Invoice__c.SeikyumotoAddress__c}</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left" colspan="2">
+        <div style="font-size:80%;">{!Invoice__c.SeikyoumonotApMName__c}</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left" colspan="2">
+        <div style="font-size:80%;">TEL {!Invoice__c.SeikyumotoDenwa__c}</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left" colspan="2">
+        <div style="font-size:80%;">E-mail {!Invoice__c.SeikyumotoEmail__c}</div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" style="border-collapse: collapse;" cellspacing="0">
+    <tr>
+      <td align="left">
+        <span style="font-size:70%;">下記のとおりご請求申し上げます。</span>
+        <table style="width:100%;border-collapse: collapse;" cellspacing="0">
+          <tr>
+            <td class="header" style="text-align:center;"><div style="font-size:80%;background:#dcdcdc;">品目</div></td>
+            <td class="header" style="text-align:center;"><div style="font-size:80%;background:#dcdcdc;">日時</div></td>
+            <td class="header" style="text-align:center;"><div style="font-size:80%;background:#dcdcdc;">時間</div></td>
+            <td class="header" style="text-align:center;"><div style="font-size:80%;background:#dcdcdc;">数量</div></td>
+            <td class="header" style="text-align:center;"><div style="font-size:80%;background:#dcdcdc;">単価</div></td>
+            <td class="header" style="text-align:center;"><div style="font-size:80%;background:#dcdcdc;">合計</div></td>
+          </tr>
+          <apex:repeat value="{!ivMsList}" var="ivms" id="ivms">
+            <tr>
+              <td class="tableLine"><div style="font-size:80%;">{!ivms.Name}</div></td>
+              <td class="tableLine"><div style="font-size:80%;">
+                <apex:outputtext value="{0, Date,yyyy/MM/dd}">
+                  <apex:param value="{!Invoice__c.Seikyubi__c}"></apex:param>
+                </apex:outputtext>
+              </div></td>
+              <td class="tableLine" style="text-align:center;"><div style="font-size:80%;">
+                <apex:outputText rendered="{!ivms.Jikan__c != null}">
+                  {!ivms.Jikan__c}時間{!ivms.Min__c}分
+                </apex:outputText>
+              </div></td>
+              <td class="tableLine" style="text-align:center;"><div style="font-size:80%;">{!ivms.Suuryou__c}</div></td>
+              <td class="tableLine" style="text-align:right;"><div style="font-size:80%;">
+                <apex:outputtext value="{0, number,###,###,###,###,###円}">
+                  <apex:param value="{!ivms.Tanka__c}"></apex:param>
+                </apex:outputtext>
+              </div></td>
+              <td class="tableLine" style="text-align:right;"><div style="font-size:80%;">
+                <apex:outputtext value="{0, number,###,###,###,###,###円}">
+                  <apex:param value="{!ivms.KingakuNoTax__c}"></apex:param>
+                </apex:outputtext>
+              </div></td>
+            </tr>
+          </apex:repeat>
+          <apex:repeat value="{!ivMsNullList}" var="ivms" id="ivmsNull">
+            <tr>
+              <td class="tableLine"><div style="font-size:80%;">　</div></td>
+              <td class="tableLine"><div style="font-size:80%;">　</div></td>
+              <td class="tableLine"><div style="font-size:80%;">　</div></td>
+              <td class="tableLine"><div style="font-size:80%;">　</div></td>
+              <td class="tableLine"><div style="font-size:80%;">　</div></td>
+              <td class="tableLine"><div style="font-size:80%;">　</div></td>
+            </tr>
+          </apex:repeat>
+          <tr><td class="tableLine" colspan="6"></td></tr>
+          <tr>
+            <td class="tableLine" colspan="4" rowspan="3"><div style="font-size:80%;">　</div></td>
+            <td class="header"><div style="font-size:80%;background:#dcdcdc;">小計</div></td>
+            <td class="tableLine" style="text-align:right;"><div style="font-size:80%;">
+              <apex:outputtext value="{0, number,###,###,###,###,###円}">
+                <apex:param value="{!Invoice__c.Shoukei__c}"></apex:param>
+              </apex:outputtext>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="header"><div style="font-size:80%;background:#dcdcdc;">消費税等（10%）</div></td>
+            <td class="tableLine" style="text-align:right;"><div style="font-size:80%;">
+              <apex:outputtext value="{0, number,###,###,###,###,###円}">
+                <apex:param value="{!Invoice__c.Tax__c}"></apex:param>
+              </apex:outputtext>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="header"><div style="font-size:80%;background:#dcdcdc;">合計</div></td>
+            <td class="tableLine" style="text-align:right;"><div style="font-size:80%;">
+              <apex:outputtext value="{0, number,###,###,###,###,###円}">
+                <apex:param value="{!Invoice__c.Goukei__c}"></apex:param>
+              </apex:outputtext>
+            </div></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:80%;">＜振込先＞</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:70%;">{!Invoice__c.F_Ginko__c}</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:70%;">{!Invoice__c.F_Shitenmei__c} {!Invoice__c.F_KouzaShubetsu__c} {!Invoice__c.F_KouzaBangou__c}</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:70%;">{!IF(Invoice__c.SeikyumotoKaishaName__c != null,Invoice__c.SeikyumotoKaishaName__c,Invoice__c.SeikyouMoto__c)}</div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" style="padding-top:10px;">
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:80%;font-weight: bold;">＜お支払い期限＞</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:70%;">
+          <apex:outputtext value="{0, date,yyyy年MM月dd日}">
+            <apex:param value="{!Invoice__c.ShiharaiKigen__c}"></apex:param>
+          </apex:outputtext>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" style="padding-top:10px;">
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:80%;font-weight: bold;">＜備考＞</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <div class="text" style="font-size:70%;">{!Invoice__c.BikouRan__c}</div>
+      </td>
+    </tr>
+  </table>
+</apex:page>

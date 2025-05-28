@@ -1,0 +1,431 @@
+﻿@charset "UTF-8";
+@import url("html5reset-1.6.1.css");
+@import url('https://fonts.googleapis.com/css?family=Philosopher:400,400i');
+
+/* ↓レイアウト↓ */
+
+html,body{ height:100%;}
+
+*{
+    line-height:150%;
+}
+
+body{
+    color:#333;
+    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Verdana, sans-serif;
+    background-image:url(bg.jpg);
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+.base{
+    margin:0 auto;
+    max-width:1000px;
+}
+
+.header{
+    padding:10px;
+    margin:20px 0px;
+    text-align:center;
+}
+
+.footer{
+    padding:10px;
+    text-align:center;
+}
+
+.work{
+    padding:5px;
+    margin:50px 0px 15px 0px;
+}
+
+.menu{
+    margin:0px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+    font-family: 'Philosopher', sans-serif;
+}
+
+.gallery{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+}
+
+.box{
+    margin:0px 5px;
+}
+
+.text{
+    margin:15px 5px;
+    padding:10px;
+    line-height:180%;
+    background:rgba(255,255,255,0.8);
+    padding:5px;
+    border-radius:5px;
+}
+
+img
+{
+	max-width:100% ;
+	height:auto ;
+}
+
+
+/* ↓タグ↓ */
+
+h1{
+    font-size:180%;
+    font-weight:normal;
+    font-family: 'Philosopher', sans-serif;
+    text-shadow:0px 0px 3px #fff;
+}
+
+h2{
+    font-size:70%;
+    font-weight:normal;
+    margin:10px;
+    text-shadow:0px 0px 3px #fff;
+}
+
+h3{
+    font-size:130%;
+    font-weight:normal;
+    text-align:center;
+    margin:20px 0px;
+    font-family: 'Philosopher', sans-serif;
+}
+
+.h3span{
+    font-size:85%;
+    border-width:3px;
+    border-style:double;
+    border-color:#af3264;
+    background-color:#fff;
+    padding:5px;
+    border-radius:3px;
+}
+
+h4{
+    font-size:110%;
+    font-weight:normal;
+    margin:10px -5px;
+    background-color:#f5eee6;
+    padding:0px 5px;
+    border-width:3px 0px;
+    border-style:double;
+    border-color:#e6a4b4;
+    text-align:center;
+    color:#5f4444;
+    font-family: 'Philosopher', sans-serif;
+}
+
+h5{
+    font-size:100%;
+    font-weight:normal;
+    margin:10px 0px;
+    color:#5f4444;
+}
+
+h6{
+    font-size:80%;
+    font-weight:normal;
+    margin:10px 0px;
+    background-color:#e6a4b4;
+    padding:3px;
+}
+
+p{
+    text-align:left;
+    padding:5px 0px;
+}
+
+em{
+    background: linear-gradient(transparent 60%, #fff799 60%);
+    font-style:normal;
+}
+
+strong{
+    background-color:#e5e4e6;
+    font-weight:normal;
+}
+
+ins{
+    background-color:#ffe4e1;   
+}
+
+small{
+    font-size:70%;
+}
+
+i{
+    font-style:italic;
+}
+
+a:link{
+    color:#c86b85;
+    text-decoration:none;
+    background:rgba(255,255,255,0.5);
+}
+
+a:visited{
+    color:#c86b85;
+    text-decoration:none;
+    background:rgba(255,255,255,0.5);
+}
+
+h1 a:link{
+    color:#333;
+    background:rgba(255,255,255,0.0);
+}
+
+h1 a:visited{
+    color:#333;
+    background:rgba(255,255,255,0.0);
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+blockquote{
+    position:relative;
+    padding:10px 10px 10px 50px;
+    box-sizing border-box;
+    background:#f5f5f5;
+    border-left:6px double #ccc;
+    box-shadow:1px 1px 3px -1px #888;
+    margin:15px;
+    font-size:90%;
+}
+
+blockquote:before{
+    display:inline-block;
+    position:absolute;
+    top:15px;
+    left:15px;
+    vertical-align: middle;
+    content:'\00275e';
+    color:#ccc;
+    font-size:30px;
+}
+
+li{
+    padding:5px;
+    margin:0px 0px 0px 20px;
+}
+
+ul{
+    margin:10px 0px;
+}
+
+ol{
+    margin:10px 0px;
+}
+
+dl{
+    padding-left:3px;
+    margin:10px 0px;
+}
+
+dt{
+    padding-left:5px;
+}
+
+dd{
+    padding-left:10px;
+}
+
+address{
+    font-size:80%;
+    font-family: 'Philosopher', sans-serif;
+}
+
+cite{
+    font-size:smaller;
+}
+
+
+/* ↓classタグ↓ */
+
+.subblock{
+    background:rgba(255,255,255,0.7);
+    padding:5px;
+    border-radius:5px;
+}
+
+.item2{
+    background-color:#fff;
+    margin:5px;
+    padding:5px;
+    font-size:70%;
+    text-align:center;
+    width:28%;
+    border-width:1px;
+    border-style:solid;
+    border-color:#ccc;
+}
+
+.list1{
+    list-style:none;
+}
+
+.list1 li{
+    display: inline-block;
+}
+
+.list2{
+    list-style-type:upper-roman;
+}
+
+.hr1{
+    margin:5px 0px;
+    border-top: 1px #ccc;
+    border-bottom: 1px #fff;
+    border-style:solid;
+}
+
+.hr2{
+    margin:5px 0px;
+    border-top: 1px #aaa;
+    border-style:dashed;
+}
+
+.hr3{
+    margin:5px 0px;
+    height:50px;
+    border-width:0px;
+}
+
+.p1{
+    padding:5px;
+    margin:5px 0px;
+    font-size:90%;
+    background-color:#fff;
+}
+
+.p2{
+    border-style:double;
+    border-width:3px;
+    border-color:#ccc;
+    padding:3px;
+    margin:5px 0px;
+    font-size:90%;
+}
+
+.p3{
+    border-style:dashed;
+    border-width:1px;
+    border-color:#ccc;
+    padding:5px;
+    margin:5px 0px;
+    font-size:90%;
+}
+
+.dl1{
+}
+
+.dt1{
+    font-family: 'Philosopher', sans-serif;
+}
+
+.dd1{
+    font-size:90%;
+    border-style:solid;
+    border-width:0px 0px 1px 0px;
+    margin:5px;
+    border-color:#bbb;
+}
+
+.dt1span{
+    background-color:#c86b85;
+    font-size:90%;
+    padding:3px 5px;
+    color:#fff;
+    border-radius:3px;
+    font-style:italic;
+}
+
+.memo{
+    background-color:#fff;
+    font-size:80%;
+    padding:0px 10px;
+    height:150px;
+    overflow:auto;
+    margin:5px 10px;
+    box-shadow:1px 1px 3px -1px #888;
+}
+
+.img1{
+    box-shadow:1px 1px 3px -1px #888;
+}
+
+.counter{
+    font-family: 'Philosopher', sans-serif;
+}
+
+.pagetop{
+    position: fixed;
+    bottom: 10px;
+    right: 14px;
+}
+ 
+.pagetop a{
+    display: block;
+    text-decoration: none;
+}
+ 
+.pagetop:hover{
+    opacity: 0.7 ;
+}
+
+
+/*↓ディスプレイ800px以下用↓*/
+
+@media screen and (max-width:800px) 
+
+{
+
+ 
+.base{
+    width:auto;
+    margin:0px 5px;
+}
+
+.box{
+    margin:0px;
+}
+
+.work{
+    float:none;
+    width:auto;
+    margin:0px;
+    padding:5px;
+}
+
+.text{
+    float:none;
+    width:auto;
+    margin:0px;
+    padding:5px;
+}
+
+.gallery{
+    flex-direction:column;
+    width:auto;
+    margin:0px;
+}
+
+.item2{
+    width:95%;
+}
+
+
+h1{
+    font-size:150%;
+    margin-top:75px;
+}
+
+}

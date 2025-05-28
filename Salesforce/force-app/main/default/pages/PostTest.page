@@ -1,0 +1,8 @@
+<apex:page showHeader="false" sidebar="false" lightningStylesheets="true" controller="PostTestCtr">
+  <form id="form1" method="post" action="https://functech--partial.sandbox.my.salesforce-sites.com/Webhook/services/apexrest/Test" enctype="application/x-www-form-urlencoded">
+    <a href="javascript:form1.submit()">
+      <apex:outputText value="TEST" style="font-size:14px;color:blue;" />
+      <input type="hidden" name="scvalue" value="test" />
+    </a>
+  </form >
+</apex:page>

@@ -1,0 +1,223 @@
+<apex:page standardController="Salary__c" extensions="SalaryDetialExt" renderAs="pdf" showHeader="false" applyhtmltag="false">
+<apex:stylesheet value="{!URLFOR($Resource.pdfcss,'pdfcss.css')}"/>
+  <table width="100%" style="padding-bottom:30px;">
+    <tr>
+      <td align="center">
+        <div class="text" style="font-size:120%;">給料明細</div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td align="left">
+        <span>FuncTech株式会社</span>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <span>{!sly.Nengetsu__c}</span>
+      </td>
+      <td align="right">
+        <span>氏名:</span>
+        <span>{!sly.Kinmusha__c}</span>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="0" style="padding-bottom:20px;">
+    <tr>
+      <td colspan="6">【勤怠】</td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">出勤日数</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">労働時間</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">欠勤日数</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">休日出勤日数</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">有給残日数</th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">{!sly.JoinWorkDayCount__c}</td>
+      <td style="border:solid 1px;">{!sly.TotalActiveWork__c}</td>
+      <td style="border:solid 1px;">{!sly.KekkinNissu__c}</td>
+      <td style="border:solid 1px;">　</td>
+      <td style="border:solid 1px;">{!sly.HolidayWorkTime__c}</td>
+      <td style="border:solid 1px;">{!sly.YukyuZan__c}</td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">平日普通残業</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">平日深夜残業</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">遅刻早退時間</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">{!sly.NomalZangyo__c}</td>
+      <td style="border:solid 1px;">{!sly.MidnightZangyoTime__c}</td>
+      <td style="border:solid 1px;">{!sly.ThikokuSoutaiTime__c}</td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;">　</td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="0" style="padding-bottom:20px;">
+    <tr>
+      <td colspan="6">【支給】</td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">基本給</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.BaseSalary__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">経費精算額</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">残業手当</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">深夜勤務手当</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">法定外休日手当</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">総支給額</th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!0}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.NomalZangyoTeate__c}"></apex:param>
+        </apex:outputtext></td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.MidnightWorkTeate__c}"></apex:param>
+        </apex:outputtext></td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.HolidayWorkTeate__c}"></apex:param>
+        </apex:outputtext></td>
+      <td style="border:solid 1px;">　</td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.ShikyuTotal__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="0" style="padding-bottom:20px;">
+    <tr>
+      <td colspan="6">【控除】</td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">健康保険</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">厚生年金保険</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">介護保険</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">雇用保険</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">社会保険料合計</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.KenkoHoken__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.KouseiNenkin__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.KaigoHoken__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.KoyoHoken__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.ShakaihokenTotal__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;"></td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">所得税</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">住民税</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">調整控除</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">定額減税</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">総控除額</th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.ShotokuTax__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.ZyuminTax__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.ChoseiKoujyo__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, -￥###,###,###,###}" rendered="{!sly.ShotokuTax__c <= sly.MonthlyAttendance__r.EmpInfo__r.GenzeiZandaka__c}">
+          <apex:param value="{!sly.ShotokuTax__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.KoujyoTotal__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="0" style="padding-bottom:20px;">
+    <tr>
+      <td colspan="6">【振込】</td>
+    </tr>
+    <tr>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;">振込金額</th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+      <th style="border:solid 1px;width:16.6%;background:#e9dfe5;"></th>
+    </tr>
+    <tr>
+      <td style="border:solid 1px;">
+        <apex:outputtext value="{0, number, ￥###,###,###,###}">
+          <apex:param value="{!sly.HurikomiTotal__c}"></apex:param>
+        </apex:outputtext>
+      </td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+      <td style="border:solid 1px;"></td>
+    </tr>
+  </table>
+</apex:page>

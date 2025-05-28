@@ -1,0 +1,70 @@
+public class SalaryDetialExt {
+    public Salary__c sly { get; set; }
+
+    public SalaryDetialExt(ApexPages.StandardController controller) {
+        this.sly = [
+            Select
+                 Id
+                ,Name
+                ,MonthlyAttendance__c
+                ,JoinWorkDayCount__c
+                ,KekkinNissu__c
+                ,YukyuZan__c
+                ,TotalActiveWork__c
+                ,NomalZangyo__c
+                ,HolidayWorkTime__c
+                ,MidnightWorkTime__c
+                ,MidnightZangyoTime__c
+                ,HolidayMidonightWorkTime__c
+                ,ThikokuSoutaiTime__c
+                ,Over45Zangyo__c
+                ,Over60Zangyo__c
+                ,BaseSalary__c
+                ,YakushokuTeate__c
+                ,FamilyTeate__c
+                ,HomeTeate__c
+                ,NoTaxTuukinhi__c
+                ,TaxTuukinhi__c
+                ,NomalZangyoTeate__c
+                ,MidnightWorkTeate__c
+                ,HolidayWorkTeate__c
+                ,KekkinKoujyo__c
+                ,ChikokuSoutaiKouzyo__c
+                ,KazeiGoukei__c
+                ,HikazeiTotal__c
+                ,ShikyuTotal__c
+                ,KaigoHoken__c
+                ,KouseiNenkin__c
+                ,KoyoHoken__c
+                ,ShakaiHokenChosei__c
+                ,ShotokuTax__c
+                ,ZyuminTax__c
+                ,ChoseiKoujyo__c
+                ,Nenmatsuchoseikanpu__c
+                ,Nenmatsuchoseichosyu__c
+                ,KanendoChosei__c
+                ,SonotaTotal__c
+                ,Shikyugaku__c
+                ,GenkinShikyugaku__c
+                ,GenbutsuSikyugaku__c
+                ,KenkoHoken__c
+                ,Yukyu__c
+                ,Kinmusha__c
+                ,Kaigo2GouFlag__c
+                ,ShakaihokenTotal__c
+                ,KoujyoTotal__c
+                ,SashihikiShikyugaku__c
+                ,HurikomiShikyu1__c
+                ,HurikomiShikyu2__c
+                ,HurikomiShikyu3__c
+                ,HurikomiTotal__c
+                ,Nengetsu__c
+                ,Bonus__c
+                ,MonthlyAttendance__r.EmpInfo__r.GenzeiZandaka__c
+            From
+                 Salary__c
+            Where
+                Id = :controller.getRecord().Id
+        ];
+    }
+}

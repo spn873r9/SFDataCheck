@@ -1,0 +1,104 @@
+<apex:page extensions="MonthlyAttendanceExt" standardController="MonthlyAttendance__c"  renderAs="pdf"  applyhtmltag="false" showheader="false"><!--extensions="MonthlyAttendanceExt"は対象のオブジェクト以外をPDFにするとき使う-->
+  <head>
+    <style>
+      body{ font-family: Arial Unicode MS;}
+      .font1{font-size: 10px;}
+      .font2{font-size: 25px; text-align: center}
+      .font3{font-size: 10px; position: absolute; left: 75%;}
+      .font4{font-size: 30px;}
+      .font5{font-size: 10px; background-color: #e0ffff;}
+      .font6{font-size: 10px; position: absolute; left: 80%;}
+      .font7{font-size: 10px; text-align: center;}
+      .font8{font-size: 10px; border-collapse: collapse;}
+      .font9{font-size: 10px; border-collapse: collapse;}
+    </style>
+  </head>
+  <body>
+    <div width="100%" class="font2">勤務表</div>
+    <div class="font1">
+    <span class="font1">Functech株式会社</span>
+    <span class="font3">報告日:</span>
+    <span class="font6"><apex:outputtext value="{0, date, yyyy年MM月dd日}"><apex:param value="{!NOW()}"></apex:param></apex:outputtext></span>
+    </div>
+    <div class="font1">
+    <span class="font1" style="line-height:15px">月次作業時間</span>
+    <span class="font3">報告者:</span>
+    <span class="font6">{!MonthlyAttendance__c.EmpInfo__r.name}</span>
+    </div>
+    <!-----------------------------月次勤怠総計------------------------------->
+    <table border="1" width="100%" class="font8">
+      <tr>
+        <td class="font5" width="15%">勤怠年月</td>
+        <td width="35%">{!MonthlyAttendance__c.name}</td>
+        <td class="font5" width="15%">勤務者名</td>
+        <td width="35%">{!MonthlyAttendance__c.EmpInfo__r.name}</td>
+      </tr>
+      <tr>
+        <td class="font5">出勤日数</td>
+        <td>{!MonthlyAttendance__c.JoinWorkDayCount__c}日</td>
+        <td class="font5">労働時間</td>
+        <td>
+          <apex:outputField value="{!MonthlyAttendance__c.SumWorkTime__c}" /><span>h</span>
+          <!--
+          <apex:outputtext value="{0, number, ##.##h}">
+            <apex:param value="{!MCEILING(MonthlyAttendance__c.SumWorkTime__c * 100) / 100}"></apex:param>
+          </apex:outputtext>
+          -->
+        </td>
+      </tr>
+      <tr>
+        <td class="font5">休憩時間</td>
+        <td>
+          <apex:outputtext value="{0, number, ##.##h}">
+            <apex:param value="{!MonthlyAttendance__c.SumBreakTime__c}"></apex:param>
+          </apex:outputtext>
+        </td>
+        <td class="font5">有給日数</td>
+        <td>{!MonthlyAttendance__c.PaidDayCount__c}日</td>
+      </tr>
+      <tr>
+        <td class="font5">特休日数</td>
+        <td>{!MonthlyAttendance__c.SpecialPaidLeave__c}日</td>
+        <td class="font5">遅刻回数</td>
+        <td>{!MonthlyAttendance__c.LateCount__c}回</td>
+      </tr>
+      <tr>
+        <td class="font5">早退回数</td>
+        <td>{!MonthlyAttendance__c.LeaveEarlyCount__c}回</td>
+      </tr>
+    </table>
+    <!------------------------日時勤怠------------------------>
+    <div class="font1" style="line-height:20px">日次作業時間</div>
+    <table border="solid:1px" width="100%" class="font8">
+      <tr style="text-align: center">
+        <td class="font5" style='width: 15%'>日付</td>
+        <td class="font5" style='width: 7%'>出社時間</td>
+        <td class="font5" style='width: 7%'>退社時間</td>
+        <td class="font5" style='width: 7%'>休憩時間</td>
+        <td class="font5" style='width: 7%'>労働時間</td>
+        <td class="font5" style='width: 7%'>休暇設定</td>
+        <td class="font5">メモ</td>
+      </tr>
+    <apex:repeat value="{!dw}" var="data">
+      <tr>
+        <td>{!data.Name}({!data.DayOfWeek__c})</td>
+        <td>{!data.ArriveAtWork__c}</td>
+        <td>{!data.LeavingOffice__c}</td>
+        <td>{!data.BreakTime__c}</td>
+        <td>{!data.FixWorkTime__c}</td>
+        <td>{!data.VacationSetting__c}</td>
+        <td>{!data.Remarks__c}</td>
+      </tr>
+    </apex:repeat>
+    </table>
+    <div><!--空白-->　</div>
+    <table border="1" width="9%" class="font8" align="right">
+      <tr>
+        <td class="font5" width="9%" style="text-align: center">検収印</td>
+      </tr>
+      <tr>
+        <td class="font4" width="9%">　</td>
+      </tr>
+    </table>
+  </body>
+</apex:page>

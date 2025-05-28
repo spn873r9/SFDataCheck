@@ -1,0 +1,37 @@
+<template>
+    <div style="background:white;border-radius:5px;padding:20px;">
+        <table style="width:100%;height:300px;">
+            <tr>
+                <td style="width:30%;">
+                    <div><lightning-input type="date" label="日付" value={dateVal} style="width:200px;" onchange={changeDate}></lightning-input></div>
+                </td>
+                <td style="width:70%;">
+                    <div>
+                        <div>カレンダー（{year}/{month}）</div>
+                        <div id="calendar">
+                            <table style="border:solid 1px;" cellspacing="0">
+                                <tr>
+                                    <template for:each={calenderHeader} for:item="head">
+                                        <td style="border:solid 1px;" key={head}>{head}</td>
+                                    </template>
+                                </tr>
+                                <template for:each={calenderData} for:item="item">
+                                    <tr key={item}>
+                                        <template for:each={item} for:item="val">
+                                            <template lwc:if={val.color}>
+                                                <td key={val.day} style="background:white;border:solid 1px;cursor:pointer;" onclick={clickDate}>{val.day}</td>
+                                            </template>
+                                            <template lwc:else>
+                                                <td key={val.day} style="background:gray;border:solid 1px;cursor:not-allowed;">{val.day}</td>
+                                            </template>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</template>

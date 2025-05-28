@@ -1,0 +1,7 @@
+<apex:page showHeader="false" renderAs="pdf" applyhtmltag="false">
+  <apex:variable var="cnt" value="{!0}" />
+  <h1>Congratulations{!cnt}</h1>
+  <apex:variable var="cnt" value="{!cnt + 1}" />
+  <p style="page-break-after:always;" />
+  This is your new Page{!cnt}
+</apex:page>

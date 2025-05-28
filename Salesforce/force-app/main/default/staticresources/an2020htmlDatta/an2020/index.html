@@ -1,0 +1,67 @@
+<apex:page id="page" docType="html-5.0">
+  <head>
+    <link rel="stylesheet" href="style.css"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta charset="UTF-8"/>
+    <title>Sample index</title>
+    <link rel="stylesheet" href="meanmenu.css" />
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="jquery.meanmenu.js"></script>
+    <script>
+        $(document).ready(function() {
+        $('nav').meanmenu();
+        });
+    </script>
+  </head>
+  <body>
+    <div class="base" id="top"><!-- ページレイアウト -->
+      <div class="header"><!-- ヘッダー -->
+        <h1><a href="index.html">Website title（サイト名）</a></h1>
+        <h2>サイトの説明。ようこそいらっしゃいませ。Welcome to my website.</h2>
+      </div><!-- ヘッダー：終わり -->
+
+      <hr class="hr3">
+        <div class="box"><!-- ボックス格納 -->
+          <div class="work"><!-- メインボックス -->
+            <div class="subblock"><!-- 背景色半透明 -->
+              <h3><span class="h3span">TEST</span></h3>
+              <h4>TEST</h4>
+              <h5>TEST</h5>
+              <p class="p1">TEST</p>
+
+            </div><!-- 背景色半透明：終わり -->
+            <hr class="hr3">
+              <h3>Gallery＆Column</h3>
+              <div class="gallery"><!-- ギャラリー -->
+                <div class="item2">
+                  <img src="gallery.png" alt="イラスト、写真"/>
+                  <p>テスト</p>
+                </div>
+                <div class="item2">
+                  <img src="gallery.png" alt="イラスト、写真"/>
+                  <p>テスト</p>
+                </div>
+                <div class="item2">
+                  <img src="gallery.png" alt="イラスト、写真"/>
+                  <p>テスト</p>
+                </div>
+                <div class="item2">
+                  <img src="gallery.png" alt="イラスト、写真"/>
+                  <p>テスト</p>
+                </div>
+                <div class="item2">
+                  <img src="gallery.png" alt="イラスト、写真"/>
+                  <p>テスト</p>
+                </div>
+                <div class="item2">
+                  <img src="gallery.png" alt="イラスト、写真"/>
+                  <p>テスト</p>
+                </div>
+              </div><!-- ギャラリー終わり -->
+            </hr>
+          </div>
+        </div>
+      </hr>
+    </div>
+  </body>
+</apex:page>

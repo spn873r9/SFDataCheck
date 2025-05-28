@@ -1,0 +1,97 @@
+<apex:page standardController="Invoice__c" extensions="InvoiceManHourSheetCtr" renderAs="pdf" showHeader="false" applyhtmltag="false">
+<apex:stylesheet value="{!URLFOR($Resource.pdfcss,'pdfcss.css')}"/>
+<apex:form >
+  <table width="100%">
+    <tr>
+      <td align="center">
+        <div style="font-size:140%;">業務報告書</div>
+      </td>
+    </tr>
+  </table>
+  <table width="100%">
+    <tr>
+      <td align="left">
+        <span class="text" style="font-size:80%;">{!Invoice__c.Shiharaisaki__c} 様</span>
+      </td>
+      <td align="right">
+        <span class="text" style="font-size:80%;">報告日：</span>
+        <span class="text" style="font-size:80%;border-bottom:1px #000000 solid;">
+          <apex:outputtext value="{0, date,yyyy年MM月dd日}">
+            <apex:param value="{!Invoice__c.Seikyubi__c}"></apex:param>
+          </apex:outputtext>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <span class="text" style="font-size:80%;">作業時間報告書</span>
+      </td>
+      <td align="right">
+        <span class="text" style="font-size:80%;">報告者：</span>
+        <span class="text" style="font-size:80%;border-bottom:1px #000000 solid;">
+          <apex:outputtext value="{!Invoice__c.SeikyumotoKaishaName__c}"/>
+          <apex:outputtext value="{!Invoice__c.SeikyouMoto__c}" rendered="{!Invoice__c.SeikyumotoKaishaName__c == null}"/>
+        </span>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <table width="100%" style="border-collapse: collapse;" cellspacing="0">
+    <tr>
+      <td align="left">
+        <table style="width:100%;" cellspacing="0">
+          <tr>
+            <td class="header" style="text-align:center;width:12%;"><div style="font-size:60%;background:#ebf6f7;">日付</div></td>
+            <td class="header" style="text-align:center;width:12%;"><div style="font-size:60%;background:#ebf6f7;">開始時間</div></td>
+            <td class="header" style="text-align:center;width:12%;"><div style="font-size:60%;background:#ebf6f7;">終了時間</div></td>
+            <td class="header" style="text-align:center;width:12%;"><div style="font-size:60%;background:#ebf6f7;">休憩時間</div></td>
+            <td class="header" style="text-align:center;width:12%;"><div style="font-size:60%;background:#ebf6f7;">勤務時間</div></td>
+            <td class="header" style="text-align:center;width:52%;"><div style="font-size:60%;background:#ebf6f7;">作業内容</div></td>
+          </tr>
+          <apex:variable var="cnt" value="{!0}" />
+          <apex:repeat value="{!mhList}" var="data" id="data">
+          <apex:variable var="cnt" value="{!cnt + 1}" />
+          <apex:variable var="pagebreak" value="{!IF(MOD(cnt,29) == 0 ,'page-break-after:always;', '')}" />
+            <tr style="{!pagebreak}">
+              <td class="tableLine"><div style="font-size:60%;"><apex:outputField value="{!data.Name}" /></div></td>
+              <td class="tableLine"><div style="font-size:60%;"><apex:outputField value="{!data.StartTime__c}" /></div></td>
+              <td class="tableLine"><div style="font-size:60%;"><apex:outputField value="{!data.EndTime__c}" /></div></td>
+              <td class="tableLine"><div style="font-size:60%;"><apex:outputField value="{!data.BreakTime__c}" /></div></td>
+              <td class="tableLine"><div style="font-size:60%;">{!LPAD(TEXT(data.Hours__c),2,'0')}:{!LPAD(TEXT(data.Minute__c),2,'0')}</div></td>
+              <td class="tableLine"><div style="font-size:60%;"><apex:outputField value="{!data.Remarks__c}" /></div></td>
+            </tr>
+            <apex:outputText rendered="{!MOD(cnt,29) == 0}">
+              <tr>
+                <td class="header" style="width:12%;"><div style="font-size:60%;background:#ebf6f7;">日付</div></td>
+                <td class="header" style="width:12%;"><div style="font-size:60%;background:#ebf6f7;">開始時間</div></td>
+                <td class="header" style="width:12%;"><div style="font-size:60%;background:#ebf6f7;">終了時間</div></td>
+                <td class="header" style="width:12%;"><div style="font-size:60%;background:#ebf6f7;">休憩時間</div></td>
+                <td class="header" style="width:12%;"><div style="font-size:60%;background:#ebf6f7;">勤務時間</div></td>
+                <td class="header" style="width:52%;"><div style="font-size:60%;background:#ebf6f7;">作業内容</div></td>
+              </tr>
+            </apex:outputText>
+          </apex:repeat>
+          <tr>
+            <td colspan="3"></td>
+            <td class="tableLine"><div style="font-size:60%;background:#ebf6f7;">合計</div></td>
+            <td class="tableLine"><div style="font-size:60%;">{!TEXT(totalHours)}:{!LPAD(TEXT(totalMinuts),2,'0')}</div></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <apex:outputText rendered="{!Invoice__c.Kenshu__c}">
+  <table width="10%" style="border-collapse: collapse;" cellspacing="0">
+    <tr>
+      <td align="center" class="header" style="text-align:center;">
+        <div style="font-size:80%;background:#ebf6f7;width:70px;height:30px;padding-top:10px;">検収印</div>
+      </td>
+      <td align="center" class="header" style="text-align:center;">
+        <div style="font-size:80%;background:white;width:70px;height:30px;padding-top:10px;">　　　</div>
+      </td>
+    </tr>
+  </table>
+  </apex:outputText>
+</apex:form>
+</apex:page>

@@ -1,0 +1,133 @@
+<apex:page controller="WorkTaskSearchCtr" lightningStylesheets="true" docType="html-5.0" id="page">
+  <c:FreezPanel />
+  <style>
+    * {
+        font-size:11px;
+    }
+    .restable {
+        border-collapse:collapse;
+        overflow-y: scroll;
+        max-height: 75vh;
+    }
+    .restable #headerTr{
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+    .restable tr:nth-child(odd) {
+        background-color:  #e7e7eb;
+    }
+     
+    .restable th,td {
+        padding: 5px 10px;
+    }
+    .buttonStyle {
+        line-height:30px;
+        height:30px;
+        width:250px;
+        font-size:16px;
+    }
+  </style>
+  <script>
+    window.onload = function(){
+        document.getElementById("{!sortSetClm}{!sortType}").style.display = "inline";
+    }
+    function searchPanelView(){
+        FreezeScreen("検索中...");
+        search();
+    }
+    function searchSortPanelView(selectClm,sortType){
+        document.getElementById("page:form:sortSetClm").value=selectClm;
+        document.getElementById("page:form:sortType").value=sortType;
+        FreezeScreen("ソート中...");
+        search();
+    }
+  </script>
+  <apex:form id="form">
+    <div style="background:white;">
+    <apex:inputHidden value="{!sortSetClm}" id="sortSetClm" />
+    <apex:inputHidden value="{!sortType}" id="sortType" />
+    <apex:actionFunction name="search" action="{!search}" />
+    <div style="margin-top:-15px;padding:0px 5px 20px 5px;">
+      <div style="background-color:  #ddd;height:25px; line-height:25px; font-weight:bold;">　[絞り込み条件]</div>
+      <table width="85%">
+        <tr>
+          <td><apex:outputText value="{!$ObjectType.WorkTask__c.Fields.Name.Label}" /></td>
+          <td><apex:inputText value="{!searchName}" onChange="search();"/></td>
+          <td><apex:outputText value="{!$ObjectType.WorkTask__c.Fields.Status__c.Label}" /></td>
+          <td><apex:inputText value="{!Status}" onChange="search();"/></td>
+        </tr>
+        <tr>
+          <td><apex:outputText value="{!$ObjectType.WorkTask__c.Fields.Tantosha__c.Label}" /></td>
+          <td><apex:inputText value="{!tanto}" onChange="search();"/></td>
+          <td><apex:outputText value="作成日" /></td>
+          <td><apex:input type="datetime-local" value="{!startDate}" onChange="searchPanelView();"/>　～　<apex:input type="datetime-local" value="{!endDate}" onChange="searchPanelView();"/></td>
+        </tr>
+        <tr>
+          <td><apex:outputText value="完了・中止を除く" /></td>
+          <td><apex:inputCheckbox value="{!noViewClose}" onChange="search();"/></td>
+        </tr>
+      </table>
+    </div>
+    <div style="padding:0px 5px 5px 5px;">
+      <apex:outputText rendered="{!searchSize != 0}">
+        <table>
+          <tr>
+            <td style="width:50%;">
+              <div style="color:blue;">検索件数:{!searchSize}件　表示件数：{!viewrecCount}件</div>
+            </td>
+            <td style="width:50%;text-align:right;">
+              <div>
+                <!-- ページネーション -->
+                <apex:outputPanel layout="none" rendered="{!enablePrev}">
+                  <apex:commandLink value="< 前" action="{!previous}" onClick="FreezeScreen('読み込み中...');" />
+                  <apex:outputLabel value=" | " />
+                </apex:outputPanel>
+                <apex:outputLabel value="{!currentPage}/{!totalPage}" />
+                <apex:outputPanel layout="none" rendered="{!enableNext}">
+                  <apex:outputLabel value=" | " />
+                  <apex:commandLink value="次 >" action="{!next}" onClick="FreezeScreen('読み込み中...');" />
+                </apex:outputPanel>  
+              </div>
+            </td>
+          </tr>
+        </table>
+      </apex:outputText>
+      <table width="100%" class="restable">
+        <tr style="background-color:  #ddd;font-weight:bold;" id="headerTr">
+          <th>詳細</th>
+          <th onClick="searchSortPanelView('Name','{!IF((sortSetClm + sortType) == 'NameASC','DESC','ASC')}');" style="cursor:pointer;">
+            <span id="NameASC" style="display:none;">▲</span>
+            <span id="NameDESC" style="display:none;">▼</span>
+            <apex:outputText value="{!$ObjectType.WorkTask__c.Fields.Name.Label}"/>
+          </th>
+          <th onClick="searchSortPanelView('Status__c','{!IF((sortSetClm + sortType) == 'Status__cASC','DESC','ASC')}');" style="cursor:pointer;">
+            <span id="Status__cASC" style="display:none;">▲</span>
+            <span id="Status__cDESC" style="display:none;">▼</span>
+            <apex:outputText value="{!$ObjectType.WorkTask__c.Fields.Status__c.Label}"/>
+          </th>
+          <th onClick="searchSortPanelView('Tantosha__c','{!IF((sortSetClm + sortType) == 'Tantosha__cASC','DESC','ASC')}');" style="cursor:pointer;">
+            <span id="Tantosha__cASC" style="display:none;">▲</span>
+            <span id="Tantosha__cDESC" style="display:none;">▼</span>
+            <apex:outputText value="{!$ObjectType.WorkTask__c.Fields.Tantosha__c.Label}"/>
+          </th>
+          <th onClick="searchSortPanelView('CreatedDate','{!IF((sortSetClm + sortType) == 'CreatedDateASC','DESC','ASC')}');" style="cursor:pointer;">
+            <span id="CreatedDateASC" style="display:none;">▲</span>
+            <span id="CreatedDateDESC" style="display:none;">▼</span>
+            <apex:outputText value="{!$ObjectType.WorkTask__c.Fields.CreatedDate.Label}"/>
+          </th>
+        </tr>
+        <apex:repeat value="{!objData}" var="obj">
+          <tr style="height:40px;">
+            <td><apex:outputLink value="/{!obj.Id}" >詳細</apex:outputLink></td>
+            <td><apex:outputField value="{!obj.Name}"/></td>
+            <td><apex:outputField value="{!obj.Status__c}"/></td>
+            <td><apex:outputField value="{!obj.Tantosha__c}"/></td>
+            <td><apex:outputField value="{!obj.CreatedDate}"/></td>
+          </tr>
+        </apex:repeat>
+      </table>
+    </div>
+    </div>
+  </apex:form>
+</apex:page>
